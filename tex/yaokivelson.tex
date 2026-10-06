@@ -1,0 +1,116 @@
+\documentclass[%
+fontsize=12pt, % Schriftgröße
+twoside=off % kein einseitiges Layout
+]{scrbook}
+\usepackage{etoolbox}
+\usepackage{scrlayer-scrpage} % Anpassbare Kopf- und Fußzeilen
+
+\usepackage[utf8]{inputenc} % Textkodierung: UTF-8
+\usepackage[T1]{fontenc} % Zeichensatzkodierung
+
+\usepackage[english]{babel} % Deutsche Lokalisierung
+\usepackage{graphicx} % Grafiken
+\usepackage[absolute]{textpos} % Positionierung
+
+
+\usepackage{calc} % Berechnungen
+\usepackage{tabto} % Tabulatoren
+\usepackage[hidelinks]{hyperref} % Hyperlinks
+\usepackage[onehalfspacing]{setspace} % 1,5facher Zeilenabstand
+\usepackage{calc} % Berechnungen
+\usepackage{enumitem} % Mehr Kontrolle über itemize-, enumerate- und description-Umgebungen
+\usepackage{relsize} % Schriftgröße in Abhängigkeit von aktueller anpassen
+\usepackage{tabularx} % Flexiblere Tabellen
+\usepackage[tablewithout, figurewithout]{caption} % Anpassen von Beschriftungen
+
+\usepackage{bookmark} % Lesezeichen
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{braket}
+
+% Silbentrennung:
+\usepackage{hyphenat}
+\usepackage[
+backend=biber,       % benutze biber statt bibtex
+style=phys,          % Physikstil
+citestyle=numeric,   % numerische Zitate [1], [2], ...
+sorting=none,        % Reihenfolge wie im Dokument
+natbib=true,         % optional für \citep, \citet
+bibencoding=utf8,    % UTF-8 für .bib-Datei
+hyperref=true,      % keine Links in Bibliographie
+backref=false        % keine Rückverweise
+]{biblatex}
+\addbibresource{meta/literature.bib}
+
+\newcommand{\hilbert}{\mathcal{H}}
+
+\begin{document}
+\chapter{Static Yao-Kivelson Model}
+\section{Kitaev Model and Yao-Kivelson Model}
+Kitaev found a way to map the strongly-interacting spin model
+\begin{equation}
+H = - \sum_{\substack{\text{x-bonds} \\ \langle jk\rangle }} J^x_{jk} \sigma^x_j\sigma_x^k
+- \sum_{\substack{\text{y-bonds} \\ \langle jk\rangle }} J^y_{jk} \sigma^y_j\sigma_y^k
+- \sum_{\substack{\text{z-bonds} \\ \langle jk\rangle }} J^z_{jk} \sigma^z_j\sigma_z^k,
+\label{eq:kitaevModel}
+\end{equation}
+now known as the Kitaev Model, to a free Majorana-Fermion hopping model, and therefore managed to solve the model exactly  \cite{kitaev_2006}. Classically, 'the ' Kitaev model is defined on a honeycomb lattice, where each coupling type $\alpha =x,y,z$ corresponds to one of the three bond orientations. However, his method directly generalizes to any tricoordinate lattice geometry \cite{reuther_2026}, provided that each site has exactly one bond of each type $\alpha = x,y,z$.
+
+One alternative to the honeycomb lattice is the star/triangle-honeycomb lattice. Instead of elementary plaquettes of size 6, it features two different types of plaquettes of size 3 and 12, respectively. When defined on this geometry, model \ref{eq:kitaevModel} is known as the Yao-Kivelson Model \cite{yao_2007}. Due to the odd length of the triangular plaquettes, this model features a groundstate that spontaneously breaks Time-Reversal Symmetry, and therefore describes a Chiral Spin Liquid. 
+\section{Kitaev's Spin-Majorana Mapping}
+Kitaev introduced a representation of a spin-$\frac{1}{2}$-degree of freedom (called 'spin' in the following) in terms of 4 fermionic Majorana modes. Consider the 4-dimensional Fockspace $\mathcal{H}$ of two independent abstract fermions $a_1,a_2$ satisfying the canonical anti-commutation relations
+\begin{equation}
+	\Big\{a_k,a_l^\dagger\Big\}=\delta_{kl},\qquad \Big\{a_k,a_l\Big\}=0.
+\end{equation}
+
+They give rise to 4 real fermion modes
+\begin{equation}
+	c_{2k-1} \coloneq c_k + c_k^\dagger\quad\text{and}\quad c_{2k} \coloneq \frac{1}{i} \Big(a_k - a_k^\dagger\Big), \qquad\text{for}\qquad k=1,2,
+	\label{eq:majoranasFromFermions}
+\end{equation}
+which are commonly called Majorana modes. They satisfy
+\begin{equation}
+	c_i^\dagger=c_i\quad\text{and}\quad\big\{c_i,c_j\big\}=2\delta_{ij} ,
+	\label{eq:majoranaAntiCommutation}
+\end{equation}
+which qualifies them to be called "real fermions", in contrast to the usual complex ones.
+
+The goal is now to use these to represent the spin algebra
+\begin{equation}
+	\sigma^\alpha \sigma^\beta
+	= \delta^{\alpha\beta}
+	+ i\epsilon^{\alpha\beta\gamma}\sigma^\gamma,
+	\qquad \alpha,\beta,\gamma=x,y,z.
+	\label{eq:spinAlgebra}
+\end{equation}
+For that, rename the 4 Majorana modes from $\{c_i\}_{i=1,\dots,4}$ to $\{b^x,b^y,b^z,d\}$ and define
+\begin{equation}
+	\sigma^\alpha \coloneq i b^\alpha d,\qquad\alpha=x,y,z.
+	\label{eq:spinFromMajoranasDef}
+\end{equation}
+A necessary condition for eq. \ref{eq:spinAlgebra} to hold is$\sigma^x\sigma^y\sigma^z=i$, which implies
+\begin{equation}
+	1 \stackrel{!}{=} b^x b^y b^z d \eqcolon D,
+	\label{eq:dIdentityCondition}
+\end{equation}
+where we have defined the hermitean operator $D$, which cannot be the identity on $\mathcal{H}$, as it anti-commutes with each Majorana operator:
+\begin{equation}
+	\left\{D,c_i\right\} = 0\quad\text{for}\quad c_i = b^x,b^y,b^z,d.
+	\label{eq:dAntiCommutesWithMajoranas}
+\end{equation}
+Due to $D^2 = 1$, $\mathcal{H}$ splits into the eigenspaces $\mathcal{H} = \mathcal{H}_1 \oplus \mathcal{H}_{-1}$, 
+where the subscript denotes the respective eigenvalues of $D$. Consequently, $\mathcal{H}_1$ is the space where eq. $\ref{eq:dIdentityCondition}$ is fulfilled. Each Majorana operator $c_i$ defines a bijection
+\begin{equation}
+c_i: \hilbert_1 \to \hilbert_{-1}, \, \ket{\psi} \mapsto c_i \ket{\psi}\quad\text{with}\quad c_i^{-1} = c_i,
+\end{equation}
+which directly follows from eq. \ref{eq:dAntiCommutesWithMajoranas}.
+
+
+of 2 fermion modes on a 4-dimensional Hilbertspace $\mathcal{H}$, giving rise to 4 Majorana Fermion modes $\left\{b^x, b^y, b^z, d\right\}$. On the Fock-Space $\mathcal{F}$
+
+
+Defining the hamiltonian \ref{eq:kitaevModel} on a 
+
+
+\printbibliography
+\end{document}
