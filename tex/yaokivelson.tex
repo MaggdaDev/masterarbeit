@@ -26,6 +26,7 @@ twoside=off % kein einseitiges Layout
 \usepackage{bookmark} % Lesezeichen
 \usepackage{amsmath}
 \usepackage{mathtools}
+\usepackage{amsfonts}
 \usepackage{braket}
 
 % Silbentrennung:
@@ -43,7 +44,7 @@ backref=false        % keine Rückverweise
 \addbibresource{meta/literature.bib}
 
 \newcommand{\hilbert}{\mathcal{H}}
-
+\DeclareMathOperator{\Span}{span}
 \begin{document}
 \chapter{Static Yao-Kivelson Model}
 \section{Kitaev Model and Yao-Kivelson Model}
@@ -85,31 +86,57 @@ The goal is now to use these to represent the spin algebra
 \end{equation}
 For that, rename the 4 Majorana modes from $\{c_i\}_{i=1,\dots,4}$ to $\{b^x,b^y,b^z,d\}$ and define
 \begin{equation}
-	\sigma^\alpha \coloneq i b^\alpha d,\qquad\alpha=x,y,z.
+	\tilde\sigma^\alpha \coloneq i b^\alpha d,\qquad\alpha=x,y,z.
 	\label{eq:spinFromMajoranasDef}
 \end{equation}
-A necessary condition for eq. \ref{eq:spinAlgebra} to hold is$\sigma^x\sigma^y\sigma^z=i$, which implies
+As $\left(\tilde\sigma^\alpha\right)^2=1$ follows directly from eq. \ref{eq:majoranaAntiCommutation}, eq. \ref{eq:spinAlgebra} reduces to the simpler, equivalent condition $\tilde\sigma^x\tilde\sigma^y\tilde\sigma^z\stackrel{!}{=}i$, which implies
 \begin{equation}
 	1 \stackrel{!}{=} b^x b^y b^z d \eqcolon D,
 	\label{eq:dIdentityCondition}
 \end{equation}
-where we have defined the hermitean operator $D$, which cannot be the identity on $\mathcal{H}$, as it anti-commutes with each Majorana operator:
+where we have defined the hermitean operator $D$. Due to $D^2 = 1$, $\mathcal{H}$ splits into the eigenspaces $\mathcal{H} = \mathcal{H}_1 \oplus \mathcal{H}_{-1}$, 
+where the subscript denotes the respective eigenvalues of $D$. Consequently, $\mathcal{H}_1$ is the space where eq. $\ref{eq:dIdentityCondition}$ is fulfilled, and is therefore called the 'physical' subspace. The projector into this subspace is given by 
+\begin{equation}
+	P = \frac{1+D}{2}.
+	\label{eq:projectorPhysical}
+\end{equation}
+
+D cannot be the identity on the whole Hilbert space $\mathcal{H}$, as it anti-commutes with each Majorana operator:
 \begin{equation}
 	\left\{D,c_i\right\} = 0\quad\text{for}\quad c_i = b^x,b^y,b^z,d.
 	\label{eq:dAntiCommutesWithMajoranas}
 \end{equation}
-Due to $D^2 = 1$, $\mathcal{H}$ splits into the eigenspaces $\mathcal{H} = \mathcal{H}_1 \oplus \mathcal{H}_{-1}$, 
-where the subscript denotes the respective eigenvalues of $D$. Consequently, $\mathcal{H}_1$ is the space where eq. $\ref{eq:dIdentityCondition}$ is fulfilled. Each Majorana operator $c_i$ defines a bijection
+
+
+It follows that each Majorana operator $c_i$ maps 1-to-1 between $\hilbert_1$ and $\hilbert_{-1}$, which shows that $\dim(\hilbert_1) = \dim(\hilbert_{-1}) = 2$. Equation \ref{eq:dAntiCommutesWithMajoranas} further implies that $D$ commutes with operators consisting of an even number of Majorana operators. In particular,
 \begin{equation}
-c_i: \hilbert_1 \to \hilbert_{-1}, \, \ket{\psi} \mapsto c_i \ket{\psi}\quad\text{with}\quad c_i^{-1} = c_i,
+	\left[D,\tilde\sigma^\alpha\right] = 0,\qquad\alpha=x,y,z,
+	\label{eq:dCommutesWithSpins}
 \end{equation}
-which directly follows from eq. \ref{eq:dAntiCommutesWithMajoranas}.
+which means $D$ and one (but not all) $\tilde\sigma^\alpha$, say $\tilde\sigma^z$, can be diagonalized simultaneously, such that we arrive at an orthonormal basis $\ket{D=\pm 1, \tilde\sigma^z=\pm 1}$ spanning $\mathcal{H}$:
+\begin{equation}
+	\mathcal{H}= \Span\{\underbrace{\ket{1,1},\ket{1,-1}}_\text{physical},\ket{-1,1},\ket{-1,-1}\}.
+\end{equation}
+This motivates a unitary transformation from the usual spinor space $\Span\{\ket{\uparrow},\ket{\downarrow}\}$ to the physical subspace $\mathcal{H}_1$ defined by
+\begin{equation}
+	U\ket{\uparrow} \coloneq \ket{1,1},\quad\text{and}\quad U\ket{\downarrow}\coloneq\ket{1,-1}.
+\end{equation}
+As the $\tilde\sigma^\alpha$ preserve both subspaces respectively due to eq. \ref{eq:dCommutesWithSpins}, their restriction to $\mathcal{H}_1$ finally defines a representation of the spin algebra sufficing
+\begin{equation}
+	\sigma^z = U^\dagger \tilde \sigma^z U,
+\end{equation}
+\begin{equation}
+	[D,H] = [P,H]= 0
+\end{equation}
+for any physical Hamiltonian $H$ expressed in terms of the $\sigma^\alpha$ from eq. \ref{eq:spinFromMajoranasDef}. This is what allows for the following procedure to obtain eigenstates of a Hamiltonian:
+
+\begin{enumerate}
+	\item Write $H$ in terms of 4 Majorana modes per spin according to eq. \ref{eq:spinFromMajoranasDef}.
+	\item Find the spectrum and eigenstates on the enlarged Hilbertspace.
+	\item Apply $P$ to project into the physical subspace. The result will be an eigenstate of the physical Hamiltonian.
+\end{enumerate}
 
 
-of 2 fermion modes on a 4-dimensional Hilbertspace $\mathcal{H}$, giving rise to 4 Majorana Fermion modes $\left\{b^x, b^y, b^z, d\right\}$. On the Fock-Space $\mathcal{F}$
-
-
-Defining the hamiltonian \ref{eq:kitaevModel} on a 
 
 
 \printbibliography
