@@ -1,0 +1,4 @@
+- lesen: fradkin, "Ising Gauge Theory" (chapter 9.6)
+- nachvollziehen: kitaev ch. 2.2: " For the planar
+lattice (but not on the torus) w is characterized by numbers wp = ±1 defined as products
+of ujk around hexagons."

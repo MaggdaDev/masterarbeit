@@ -27,6 +27,9 @@ twoside=off % kein einseitiges Layout
 \usepackage{amsmath}
 \usepackage{mathtools}
 \usepackage{amsfonts}
+\usepackage{amsthm}
+
+\newtheorem{lemma}{Lemma}
 \usepackage{braket}
 
 % Silbentrennung:
@@ -44,6 +47,8 @@ backref=false        % keine Rückverweise
 \addbibresource{meta/literature.bib}
 
 \newcommand{\hilbert}{\mathcal{H}}
+\newcommand{\und}{\quad\text{and}\quad}
+\newcommand{\for}{\quad\text{for}\quad}
 \DeclareMathOperator{\Span}{span}
 \begin{document}
 \chapter{Static Yao-Kivelson Model}
@@ -59,24 +64,24 @@ now known as the Kitaev Model, to a free Majorana-Fermion hopping model, and the
 
 One alternative to the honeycomb lattice is the star/triangle-honeycomb lattice. Instead of elementary plaquettes of size 6, it features two different types of plaquettes of size 3 and 12, respectively. When defined on this geometry, model \ref{eq:kitaevModel} is known as the Yao-Kivelson Model \cite{yao_2007}. Due to the odd length of the triangular plaquettes, this model features a groundstate that spontaneously breaks Time-Reversal Symmetry, and therefore describes a Chiral Spin Liquid. 
 \section{Kitaev's Spin-Majorana Mapping}
-Kitaev introduced a representation of a spin-$\frac{1}{2}$-degree of freedom (called 'spin' in the following) in terms of 4 fermionic Majorana modes. Consider the 4-dimensional Fockspace $\mathcal{H}$ of two independent abstract fermions $a_1,a_2$ satisfying the canonical anti-commutation relations
+Kitaev introduced a representation of a spin-$\frac{1}{2}$-degree of freedom (called 'spin' in the following) in terms of 4 fermionic Majorana modes. Consider the 4-dimensional Fockspace $\mathcal{H}$ of two abstract fermions $a_1,a_2$ satisfying the canonical anti-commutation relations
 \begin{equation}
-	\Big\{a_k,a_l^\dagger\Big\}=\delta_{kl},\qquad \Big\{a_k,a_l\Big\}=0.
+	\Big\{a_k,a_l^\dagger\Big\}=\delta_{kl}\quad\text{and}\quad \Big\{a_k,a_l\Big\}=0\quad\text{for}\quad k,l=1,2.
 \end{equation}
 
-They give rise to 4 real fermion modes
+They give rise to the 4 operators
 \begin{equation}
 	c_{2k-1} \coloneq c_k + c_k^\dagger\quad\text{and}\quad c_{2k} \coloneq \frac{1}{i} \Big(a_k - a_k^\dagger\Big), \qquad\text{for}\qquad k=1,2,
 	\label{eq:majoranasFromFermions}
 \end{equation}
 which are commonly called Majorana modes. They satisfy
 \begin{equation}
-	c_i^\dagger=c_i\quad\text{and}\quad\big\{c_i,c_j\big\}=2\delta_{ij} ,
+	c_i^\dagger=c_i\quad\text{and}\quad\big\{c_i,c_j\big\}=2\delta_{ij} \for i,j=1,\dots,4,
 	\label{eq:majoranaAntiCommutation}
 \end{equation}
 which qualifies them to be called "real fermions", in contrast to the usual complex ones.
 
-The goal is now to use these to represent the spin algebra
+These will be used to represent the spin algebra (see sec. \ref{sec:representationsOfPauliAlgebra}), i.e. construct a set $\left\{\sigma^\alpha\right\}_{\alpha=x,y,z}$ of 2-dim. hermitian operators obeying 
 \begin{equation}
 	\sigma^\alpha \sigma^\beta
 	= \delta^{\alpha\beta}
@@ -89,52 +94,131 @@ For that, rename the 4 Majorana modes from $\{c_i\}_{i=1,\dots,4}$ to $\{b^x,b^y
 	\tilde\sigma^\alpha \coloneq i b^\alpha d,\qquad\alpha=x,y,z.
 	\label{eq:spinFromMajoranasDef}
 \end{equation}
-As $\left(\tilde\sigma^\alpha\right)^2=1$ follows directly from eq. \ref{eq:majoranaAntiCommutation}, eq. \ref{eq:spinAlgebra} reduces to the simpler, equivalent condition $\tilde\sigma^x\tilde\sigma^y\tilde\sigma^z\stackrel{!}{=}i$, which implies
+Direct calculation shows that this definition suffices eq. \ref{eq:spinAlgebra} if and only if $\tilde\sigma^x\tilde\sigma^y\tilde\sigma^z\stackrel{!}{=}i$ holds, which is equivalent to
 \begin{equation}
 	1 \stackrel{!}{=} b^x b^y b^z d \eqcolon D,
 	\label{eq:dIdentityCondition}
 \end{equation}
-where we have defined the hermitean operator $D$. Due to $D^2 = 1$, $\mathcal{H}$ splits into the eigenspaces $\mathcal{H} = \mathcal{H}_1 \oplus \mathcal{H}_{-1}$, 
-where the subscript denotes the respective eigenvalues of $D$. Consequently, $\mathcal{H}_1$ is the space where eq. $\ref{eq:dIdentityCondition}$ is fulfilled, and is therefore called the 'physical' subspace. The projector into this subspace is given by 
-\begin{equation}
-	P = \frac{1+D}{2}.
-	\label{eq:projectorPhysical}
-\end{equation}
-
-D cannot be the identity on the whole Hilbert space $\mathcal{H}$, as it anti-commutes with each Majorana operator:
+where we have defined the hermitian operator $D$. Due to $D^2 = 1$, $\mathcal{H}$ splits into the eigenspaces $\mathcal{H} = \mathcal{H}_1 \oplus \mathcal{H}_{-1}$, 
+where the subscript denotes the respective eigenvalues of $D$.  $\mathcal{H}_1$ is the space where eq. $\ref{eq:dIdentityCondition}$ is fulfilled, and is therefore called the 'physical' subspace, while $\hilbert$ is called 'extended' Hilbert space. D cannot be the identity on $\mathcal{H}$, as it anti-commutes with each Majorana operator:
 \begin{equation}
 	\left\{D,c_i\right\} = 0\quad\text{for}\quad c_i = b^x,b^y,b^z,d.
 	\label{eq:dAntiCommutesWithMajoranas}
 \end{equation}
 
-
-It follows that each Majorana operator $c_i$ maps 1-to-1 between $\hilbert_1$ and $\hilbert_{-1}$, which shows that $\dim(\hilbert_1) = \dim(\hilbert_{-1}) = 2$. Equation \ref{eq:dAntiCommutesWithMajoranas} further implies that $D$ commutes with operators consisting of an even number of Majorana operators. In particular,
+This anti-commutation implies that each Majorana operator $c_i$ maps 1-to-1 between $\hilbert_1$ and $\hilbert_{-1}$, which shows that $\dim(\hilbert_1) = \dim(\hilbert_{-1}) = 2$. Equation \ref{eq:dAntiCommutesWithMajoranas} further implies that $D$ commutes with operators consisting of an even number of Majorana operators. In particular,
 \begin{equation}
-	\left[D,\tilde\sigma^\alpha\right] = 0,\qquad\alpha=x,y,z,
+	\left[D,\tilde\sigma^\alpha\right] = 0\for \alpha=x,y,z,
 	\label{eq:dCommutesWithSpins}
 \end{equation}
-which means $D$ and one (but not all) $\tilde\sigma^\alpha$, say $\tilde\sigma^z$, can be diagonalized simultaneously, such that we arrive at an orthonormal basis $\ket{D=\pm 1, \tilde\sigma^z=\pm 1}$ spanning $\mathcal{H}$:
+which means the $\tilde\sigma^\alpha$ preserve the physical subspace and their restriction to $\hilbert_1$,
 \begin{equation}
-	\mathcal{H}= \Span\{\underbrace{\ket{1,1},\ket{1,-1}}_\text{physical},\ket{-1,1},\ket{-1,-1}\}.
+	\sigma^\alpha\coloneq \tilde\sigma^\alpha \vert_{\hilbert_1},
 \end{equation}
-This motivates a unitary transformation from the usual spinor space $\Span\{\ket{\uparrow},\ket{\downarrow}\}$ to the physical subspace $\mathcal{H}_1$ defined by
-\begin{equation}
-	U\ket{\uparrow} \coloneq \ket{1,1},\quad\text{and}\quad U\ket{\downarrow}\coloneq\ket{1,-1}.
-\end{equation}
-As the $\tilde\sigma^\alpha$ preserve both subspaces respectively due to eq. \ref{eq:dCommutesWithSpins}, their restriction to $\mathcal{H}_1$ finally defines a representation of the spin algebra sufficing
-\begin{equation}
-	\sigma^z = U^\dagger \tilde \sigma^z U,
-\end{equation}
-\begin{equation}
-	[D,H] = [P,H]= 0
-\end{equation}
-for any physical Hamiltonian $H$ expressed in terms of the $\sigma^\alpha$ from eq. \ref{eq:spinFromMajoranasDef}. This is what allows for the following procedure to obtain eigenstates of a Hamiltonian:
+is well-defined and finally yields the desired representation of the spin algebra.
 
+Any Hamiltonian describing  a spin can be seen as Pauli matrices acting on $\hilbert_1$. It can be beneficial to replace the $\sigma^\alpha$ by $\tilde\sigma^\alpha$ acting on the extended Hilbert space, i.e. allowing states to have unphysical degrees of freedom. Such a state can always be projected into $\hilbert_{1}$ using the projector
+\begin{equation}
+	P = \frac{1+D}{2}
+	\label{eq:projectorPhysical}
+\end{equation}
+to obtain a physical state. If we manage to find an $H$-eigenstate $\ket{\psi}$ in the extended Hilbert space $\hilbert$, the projection $P \ket{\psi} \in \hilbert_1$ will either be a non-normalized physical eigenstate of the same energy or the zero-vector. This follows from the fact that $D$ and therefore also $P$ commute with $H$ according to eq. \ref{eq:dCommutesWithSpins}. Hence, in case the problem admits a solution in the extended Hilbert space, it is also solved in the physical space.
+
+To obtain more intuition about the unphysical degrees of freedom, Kitaev used the concept of gauge transformations. Together with the identity, $D$ is a unitary representation of the gauge group $\mathcal{G}=Z_2$ acting on the extended Hilbert space $\hilbert$. This allows the characterization of the physical states $\hilbert_1$ as
+\begin{equation}
+	\text{$\ket{\psi}$ is physical} \iff \text{$\ket{\psi}$ is invariant under $\mathcal{G}$}.
+\end{equation}
+The projector from eq. \ref{eq:projectorPhysical} can be interpreted as the group-average, which is in general known to project into the invariant subspace. If two states are related to each other by the application of $D$, they are called gauge-equivalent and they correspond to the same physical state. The converse is in general not true: Not all the states corresponding to the same physical state need to be gauge equivalent.
+
+The mapping discussed in this section generalizes straight-forwardly to many-spin systems, where the operators now act on the product space. The gauge symmetry then becomes a local gauge symmetry at each individual site, implying that each gauge-sector contains $2^N$ gauge-equivalent states in the $4^N$-dim. extended Hilbert space of $N$ spins.
+
+
+\section{Application of the Mapping to the Model}
+Applying the spin-Majorana mapping from eq. \ref{eq:spinFromMajoranasDef} to a general Kitaev Hamiltonian \ref{eq:kitaevModel} yields 
+
+\begin{equation}
+H = i \sum_{\substack{\text{bonds} \\ \langle jk\rangle }}  J_{jk} u^{\alpha(j,k)}_{jk} \left( d_j d_k\right)\quad\text{with}\quad u_{j,k}^\alpha\coloneq i\,b_j^\alpha b_k^\alpha = \left(u_{j,k}^\alpha\right)^\dagger,
+\label{eq:kitaevModelMappedToMajoranas}
+\end{equation}
+which is grouped into $d$-Majoranas living on the lattice sites, and pairs of $b^\alpha$-Majoranas living on the bonds. The value $\alpha(j,k)=x,y,z$ should be determined by the bond $\langle jk\rangle$, but this explicit dependence will be omitted from here on. One has to pick some fixed orientation for each bond, as each bond $\langle jk\rangle$ should uniquely identify the operators $\Big(d_jd_k\Big)$ and $\Big(u_{jk}^\alpha\Big)$, even though they are each anti-symmetric under exchanging $j \leftrightarrow k$.
+
+We now focus on lattices where each site has at most one bond of each type $\alpha=x,y,z$, and denote this requirement by ($\ast$). In this case, the $u_{j,k}^\alpha$ commute among each other, which can be seen by picking two arbitrary different bonds:
 \begin{enumerate}
-	\item Write $H$ in terms of 4 Majorana modes per spin according to eq. \ref{eq:spinFromMajoranasDef}.
-	\item Find the spectrum and eigenstates on the enlarged Hilbertspace.
-	\item Apply $P$ to project into the physical subspace. The result will be an eigenstate of the physical Hamiltonian.
+	\item[Case 1:]The bonds share no site. Then the Majorana modes constituting the two $u$-operators are 4 independent anti-commuting Majorana modes, i.e. the $u$-operators are independent commuting Majorana bilinears.
+	\item[Else:]The bonds share exactly one site, w.l.o.g. labeled by $u_{j,k}^\alpha$ and $u_{k,l}^\beta$ with $j\neq l$. Then $u_{j,k}^\alpha u_{k,l}^\beta = i^2 \, b_j^\alpha b_k^\alpha b_k^\beta b_l^\beta $ consists of 4 independent Majorana modes if and only if $\alpha \neq \beta$, which is guaranteed by ($\ast)$. The claim follows analogously to case 1.
 \end{enumerate}
+
+From this, we can conclude that each $u_{j,k}^\alpha$ also commutes with the Hamiltonian $\ref{eq:kitaevModelMappedToMajoranas}$: Apart from terms $u_{j,k}^\alpha$, $H$ only consists of terms $d_jd_k$, which are Majorana bilinears independent of all the $u_{j,k}^\alpha$. With $\left(u_{jk}^\alpha\right)^2=1$, this means $H$ decomposes into symmetry-sectors labeled by the eigenvalues $\pm 1$ of all the $u_{jk}^\alpha$. In each symmetry sector, the $u$-operators can then be replaced by their eigenvalue and it remains to solve a quadratic hopping Hamiltonian, which in general possess an accessible exact solution.
+
+However, for the gauge transformation $D_l=b_l^xb_l^yb_l^zd_l$ from eq. \ref{eq:dIdentityCondition}, one finds
+\begin{equation}
+	 D_l^\dagger u_{jk}^\alpha D_l  =  u_{jk}^\alpha \cdot
+	\begin{cases}
+		-1, & j=l\text{ or } j=k\\
+		+1, & \text{else}
+	\end{cases},
+	\label{eq:uIsNotGaugeInvariant}
+\end{equation}
+i.e. for all sites $l$, each $\left\{u_{jk}^\alpha\right\}$-eigenstate is gauge equivalent to an eigenstate from a different sector, namely the sector obtained by flipping the $u_{jk}^\alpha$-labels on all bonds connected to the site $l$. Therefore, fixing the values of the $u_{jk}^\alpha$ is a practical tool to solve for the eigenstates, but it does not provide a gauge-invariant characterization of the $H$-eigenstates. To construct such observables, consider a sequence of lattice bonds $\gamma = \big(\langle j_1k_1\rangle, \langle j_2k_2\rangle,\dots,\langle j_nk_n\rangle\big)$ defining an operator
+\begin{equation}
+	W_\gamma \coloneq \prod_{\langle jk\rangle\in\gamma} u_{jk}^{\alpha(j,k)},
+\end{equation}
+where $\alpha(j,k)$ is picked depending on the bond $\langle jk\rangle$ identically as in the Hamiltonian $\ref{eq:kitaevModelMappedToMajoranas}$.
+As all the $u_{jk}^\alpha$ commute and square to $1$, we assume w.l.o.g. no duplicate bonds in $\gamma$. According to eq. \ref{eq:uIsNotGaugeInvariant}, $W_\gamma$ is gauge invariant under the gauge transformation $D_j$ on site $j$ if and only if $\gamma$ has an even number of bonds containing the site $j$. Geometrically, this is equivalent to $\gamma$ consisting only of closed loops of bonds.
+\chapter{Additional Notes}
+
+\section{Representations of the Pauli Algebra}
+\label{sec:representationsOfPauliAlgebra}
+
+If we introduce 3 hermitian operators $\left\{\tilde\sigma^x,\tilde\sigma^y,\tilde\sigma^z\right\}$ on a 2-dim. Hilbert space, what are the precise conditions for these to represent a spin unitarily equivalently to the usual Pauli matrices? Indeed, it is enough to check that the relation
+\begin{equation}
+	\tilde\sigma^\alpha \tilde\sigma^\beta
+	= \delta^{\alpha\beta}
+	+ i\epsilon^{\alpha\beta\gamma}\tilde\sigma^\gamma,
+	\qquad \alpha,\beta,\gamma=x,y,z.
+	\label{eq:pauliAlgebra}
+\end{equation}
+holds according to the following lemma.
+\begin{lemma}
+	All 2-dim. hermitian representations of the Pauli algebra are unitarily equivalent, i.e. if some hermitian 2-dim. operators $\left\{\tilde\sigma^x,\tilde\sigma^y,\tilde\sigma^z\right\}$ suffice equation \ref{eq:pauliAlgebra}, there exists a unitary transformation $U$ such that
+	\begin{equation}
+		\tilde\sigma^\alpha = U^\dagger \sigma^\alpha U\quad\text{for}\quad\alpha=x,y,z,
+	\end{equation}
+	where $\sigma^\alpha$ are the usual Pauli matrices in some fixed basis.
+\end{lemma}
+
+Hence, if a set of matrices $\left\{\tilde\sigma^\alpha\right\}$ suffices these requirements, we can transform any spin Hamiltonian $H$ to $\tilde H$ by replacing all the $\sigma^\alpha$ by $\tilde\sigma^\alpha$. This just amounts to picking a certain basis in the abstract Hilbert space.
+
+\begin{proof}
+	We construct a basis in which the matrix representation of the $\tilde\sigma^\alpha$ agrees with the usual Pauli matrices. From eq. \ref{eq:pauliAlgebra} for $\alpha=\beta$ it follows that all the $\tilde\sigma^\alpha$ can only have eigenvalues $\pm 1$. As they mutually anti-commute, none of them can be proportional to the identity, hence each one has the spectrum $\{-1,+1\}$. Let $\ket{\uparrow}$ be an eigenvector of $\tilde\sigma^z$ with eigenvalue $1$, and construct $\ket{\downarrow}\coloneq\tilde\sigma^x\ket{\uparrow}$. We find
+	\begin{equation}
+		\tilde\sigma^z\ket{\downarrow} = 	\tilde\sigma^z	\tilde\sigma^x \ket{\uparrow} = -\tilde\sigma^x	\tilde\sigma^z \ket{\uparrow} =-\tilde\sigma^x \ket{\uparrow}= - \ket{\downarrow}
+	\end{equation}
+	and
+	\begin{equation}
+		\tilde\sigma^x \ket{\downarrow} = \big(\tilde\sigma^x\big)^2\ket{\uparrow} = \ket{\uparrow},
+	\end{equation}
+	hence in the basis $\left\{\ket{\uparrow},\ket{\downarrow}\right\}$, $\tilde\sigma^{\alpha}$ can be written as matrices
+	\begin{equation}
+		\tilde\sigma_z =
+		\begin{pmatrix}
+			1 & 0\\
+			0 & -1
+		\end{pmatrix},
+		\quad
+		\tilde\sigma_x =
+		\begin{pmatrix}
+			0 & 1\\
+			1 & 0
+		\end{pmatrix},\quad\text{and}\quad
+		\tilde\sigma_y =
+		\begin{pmatrix}
+			0 & -i\\
+			i & 0
+		\end{pmatrix},
+	\end{equation}
+	where the matrix representation for $\tilde\sigma^y$ is fixed by the condition  $\tilde\sigma^z\tilde\sigma^x = i\tilde\sigma^y$. Thus, the $\tilde\sigma^\alpha$ agree with the usual Pauli matrices in a suitable basis, which means they have to be related to each other by a unitary transformation.
+\end{proof}
 
 
 
