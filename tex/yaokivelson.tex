@@ -53,7 +53,7 @@ backref=false        % keine Rückverweise
 \begin{document}
 \chapter{Static Yao-Kivelson Model}
 \section{Kitaev Model and Yao-Kivelson Model}
-Kitaev found a way to map the strongly-interacting spin model
+Kitaev introduced a way to map the spin liquid model
 \begin{equation}
 H = - \sum_{\substack{\text{x-bonds} \\ \langle jk\rangle }} J^x_{jk} \sigma^x_j\sigma_x^k
 - \sum_{\substack{\text{y-bonds} \\ \langle jk\rangle }} J^y_{jk} \sigma^y_j\sigma_y^k
@@ -134,6 +134,7 @@ The mapping discussed in this section generalizes straight-forwardly to many-spi
 
 
 \section{Application of the Mapping to the Model}
+\label{sec:applicationOfMappingToModel}
 Applying the spin-Majorana mapping from eq. \ref{eq:spinFromMajoranasDef} to a general Kitaev Hamiltonian \ref{eq:kitaevModel} yields 
 
 \begin{equation}
@@ -159,12 +160,13 @@ However, for the gauge transformation $D_l=b_l^xb_l^yb_l^zd_l$ from eq. \ref{eq:
 	\end{cases},
 	\label{eq:uIsNotGaugeInvariant}
 \end{equation}
-i.e. for all sites $l$, each $\left\{u_{jk}^\alpha\right\}$-eigenstate is gauge equivalent to an eigenstate from a different sector, namely the sector obtained by flipping the $u_{jk}^\alpha$-labels on all bonds connected to the site $l$. Therefore, fixing the values of the $u_{jk}^\alpha$ is a practical tool to solve for the eigenstates, but it does not provide a gauge-invariant characterization of the $H$-eigenstates. To construct such observables, consider a sequence of lattice bonds $\gamma = \big(\langle j_1k_1\rangle, \langle j_2k_2\rangle,\dots,\langle j_nk_n\rangle\big)$ defining an operator
+i.e. the $u_{jk}^\alpha$-eigenvalues are not gauge invariant. Indeed, for all sites $l$, a sector labeled by $\left\{u_{jk}^\alpha\right\}$ is gauge equivalent to the sector obtained by flipping the $u_{jk}^\alpha$-labels on all bonds connected to the site $l$. By gauge-equivalence of vector spaces we mean every state from the one space can be obtained by applying a gauge transformation to a suitable vector from the other space. In our case, this is guaranteed by the fact that $D_l$ is self-inverse, and hence defines a bijection between the two sectors.
+
+To obtain physical observables, we partition the set of labels $\left\{u_{jk}^\alpha\right\}$ into gauge-equivalent classes. One can show (see sec. \ref{sec:characterizationOfGaugeEquivalenceClasses}) that these can be fully characterized by the values of products
 \begin{equation}
-	W_\gamma \coloneq \prod_{\langle jk\rangle\in\gamma} u_{jk}^{\alpha(j,k)},
+	W_\gamma = \prod_{\langle jk\rangle\in\gamma}\left(-i\, u^\alpha_{jk}\right)
 \end{equation}
-where $\alpha(j,k)$ is picked depending on the bond $\langle jk\rangle$ identically as in the Hamiltonian $\ref{eq:kitaevModelMappedToMajoranas}$.
-As all the $u_{jk}^\alpha$ commute and square to $1$, we assume w.l.o.g. no duplicate bonds in $\gamma$. According to eq. \ref{eq:uIsNotGaugeInvariant}, $W_\gamma$ is gauge invariant under the gauge transformation $D_j$ on site $j$ if and only if $\gamma$ has an even number of bonds containing the site $j$. Geometrically, this is equivalent to $\gamma$ consisting only of closed loops of bonds.
+around all the elementary non-contractible loops $\gamma$ of the lattice, which are typically the elementary plaquettes. Additionally, there may be non-local non-contractible loops arising from the topology of the underlying manifold, most prominently the two independent non-contractible loops on the torus for the case of periodic boundary conditions.
 \chapter{Additional Notes}
 
 \section{Representations of the Pauli Algebra}
@@ -221,7 +223,29 @@ Hence, if a set of matrices $\left\{\tilde\sigma^\alpha\right\}$ suffices these 
 \end{proof}
 
 
+\section{Characterization of Gauge-Equivalent Sectors}
+\label{sec:characterizationOfGaugeEquivalenceClasses}
+Here, we will adapt the more general derivation in \cite{geometricCriterion} to show why the flux through elementary non-contractible loops classifies the gauge-equivalence classes of bond-configurations $\left\{u_{jk}^\alpha\right\}$. We start by viewing the lattice as a graph of vertices (sites) connected by edges (bonds), which is assumed to be connected, as non-connected parts are physically independent and could be solved individually. The labels $\left\{u_{jk}^\alpha\right\}$ then correspond to assigning numbers $\pm 1$ to each edge, and the gauge transformation $D_j$ corresponds to flipping all the $u$-numbers incident to site $j$. Assumption $(\ast)$ from section \ref{sec:applicationOfMappingToModel} (i.e. that each site has at at most one bond of each bond type $\alpha=x,y,z$) then implies that no vertex has a degree larger than $3$.
 
+Let us call the number of vertices $n$ and the number of bonds $m$. First, we show that there exists a set of $n-1$ edges such that every gauge-class of configurations has a representative with 
+\begin{equation}
+		u_{j_1 k_1}^\alpha,\dots,u_{j_{n-1} k_{n-1}}^\alpha=1,
+		\label{eq:bondsFixedToOne}
+\end{equation}
+surviving the sanity-check that every connected graph has at least $n-1$ edges. To prove this, consider a spanning tree of the graph, i.e. a subgraph containing no cycles, which connects all $n$ vertices. Such a tree always exists for a connected graph and contains $n-1$ edges, which will correspond to the above $u_{j_l k_l}^\alpha$, $l=1,\dots,n-1$. We provide an algorithm that transforms any configuration $\left\{u_{jk}^\alpha\right\}$ into one sufficing equation \ref{eq:bondsFixedToOne}:
+\begin{enumerate}
+	\item[1:] Pick some starting vertex $v_{j=1}$ in the spanning tree, mark it as visited.
+	\item[2:] Pick some next unvisited vertex $v_{j+1}$ adjacent to a visited one (e.g. following a depth-first-search).
+	\item[3:] Potentially apply a gauge transformation $D_{j+1}$ to assert that $u_{j,j+1}^\alpha=1$.
+	\item[4:] Mark $v_{i+1}$ as visited and repeat from 2 with $i\to i+1$ if not all vertices visited.
+\end{enumerate}
+As the spanning tree contains no cycles, this algorithm traverses every edge of the tree, installs the correct value $u_{jk}^\alpha=1$ and is guaranteed not to affect the same edge again, as both vertices of this edge are marked as visited. This shows that out of the $m$ bond variables, at least $n-1$ can be fixed by the gauge freedom. Therefore, at most $2^{m-n+1}$ inequivalent classes can exist.
+
+According to a general result from graph theory, the number $m-n+1$ coincides with the maximum number of independent cycles through the graph. Therefore, we can define $m-n+1$ independent quantities
+\begin{equation}
+	W_\gamma \coloneq \prod_{\langle jk\rangle\in\gamma} \left(-i\,u^\alpha_{jk}\right),
+\end{equation}
+where $\gamma$ are independent cycles through the lattice. These quantities are gauge invariant, as each vertex $k$ in $\gamma$ is included in exactly two edges $\langle jk\rangle,\langle kl\rangle\in\gamma$, which cancels the minus-sign generated by a gauge transformation on $k$. Therefore, if two states differ by the eigenvalue of $W_\gamma$ for some loop $\gamma$, they cannot be gauge-equivalent.
 
 \printbibliography
 \end{document}
