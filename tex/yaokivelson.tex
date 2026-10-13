@@ -28,8 +28,10 @@ twoside=off % kein einseitiges Layout
 \usepackage{mathtools}
 \usepackage{amsfonts}
 \usepackage{amsthm}
+\usepackage{bm}
 
 \newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
 \usepackage{braket}
 
 % Silbentrennung:
@@ -49,18 +51,20 @@ backref=false        % keine Rückverweise
 \newcommand{\hilbert}{\mathcal{H}}
 \newcommand{\und}{\quad\text{and}\quad}
 \newcommand{\for}{\quad\text{for}\quad}
+
+\DeclareMathOperator{\trs}{\mathcal{T}}
 \DeclareMathOperator{\Span}{span}
 \begin{document}
 \chapter{Static Yao-Kivelson Model}
 \section{Kitaev Model and Yao-Kivelson Model}
 Kitaev introduced a way to map the spin liquid model
 \begin{equation}
-H = - \sum_{\substack{\text{x-bonds} \\ \langle jk\rangle }} J^x_{jk} \sigma^x_j\sigma_x^k
-- \sum_{\substack{\text{y-bonds} \\ \langle jk\rangle }} J^y_{jk} \sigma^y_j\sigma_y^k
-- \sum_{\substack{\text{z-bonds} \\ \langle jk\rangle }} J^z_{jk} \sigma^z_j\sigma_z^k,
+H = \sum_{\substack{\text{x-bonds} \\ \langle jk\rangle }} J^x_{jk} \sigma^x_j\sigma_x^k
++\sum_{\substack{\text{y-bonds} \\ \langle jk\rangle }} J^y_{jk} \sigma^y_j\sigma_y^k
++\sum_{\substack{\text{z-bonds} \\ \langle jk\rangle }} J^z_{jk} \sigma^z_j\sigma_z^k,
 \label{eq:kitaevModel}
 \end{equation}
-now known as the Kitaev Model, to a free Majorana-Fermion hopping model, and therefore managed to solve the model exactly  \cite{kitaev_2006}. Classically, 'the ' Kitaev model is defined on a honeycomb lattice, where each coupling type $\alpha =x,y,z$ corresponds to one of the three bond orientations. However, his method directly generalizes to any tricoordinate lattice geometry \cite{reuther_2026}, provided that each site has exactly one bond of each type $\alpha = x,y,z$.
+now known as the Kitaev Model, to a free Majorana-Fermion hopping model, and therefore managed to solve the model exactly  \cite{kitaev_2006}. Classically, 'the ' Kitaev model is defined on a honeycomb lattice, where each coupling type $\alpha =x,y,z$ corresponds to one of the three bond orientations. However, his method directly generalizes to any lattice geometry \cite{reuther_2026}, provided that each site has exactly one bond of each type $\alpha = x,y,z$.
 
 One alternative to the honeycomb lattice is the star/triangle-honeycomb lattice. Instead of elementary plaquettes of size 6, it features two different types of plaquettes of size 3 and 12, respectively. When defined on this geometry, model \ref{eq:kitaevModel} is known as the Yao-Kivelson Model \cite{yao_2007}. Due to the odd length of the triangular plaquettes, this model features a groundstate that spontaneously breaks Time-Reversal Symmetry, and therefore describes a Chiral Spin Liquid. 
 \section{Kitaev's Spin-Majorana Mapping}
@@ -138,7 +142,7 @@ The mapping discussed in this section generalizes straight-forwardly to many-spi
 Applying the spin-Majorana mapping from eq. \ref{eq:spinFromMajoranasDef} to a general Kitaev Hamiltonian \ref{eq:kitaevModel} yields 
 
 \begin{equation}
-H = i \sum_{\substack{\text{bonds} \\ \langle jk\rangle }}  J_{jk} u^{\alpha(j,k)}_{jk} \left( d_j d_k\right)\quad\text{with}\quad u_{j,k}^\alpha\coloneq i\,b_j^\alpha b_k^\alpha = \left(u_{j,k}^\alpha\right)^\dagger,
+H = -i \sum_{\substack{\text{bonds} \\ \langle jk\rangle }}  J_{jk} u^{\alpha(j,k)}_{jk} \left( d_j d_k\right)\quad\text{with}\quad u_{j,k}^\alpha\coloneq i\,b_j^\alpha b_k^\alpha = \left(u_{j,k}^\alpha\right)^\dagger,
 \label{eq:kitaevModelMappedToMajoranas}
 \end{equation}
 which is grouped into $d$-Majoranas living on the lattice sites, and pairs of $b^\alpha$-Majoranas living on the bonds. The value $\alpha(j,k)=x,y,z$ should be determined by the bond $\langle jk\rangle$, but this explicit dependence will be omitted from here on. One has to pick some fixed orientation for each bond, as each bond $\langle jk\rangle$ should uniquely identify the operators $\Big(d_jd_k\Big)$ and $\Big(u_{jk}^\alpha\Big)$, even though they are each anti-symmetric under exchanging $j \leftrightarrow k$.
@@ -164,9 +168,36 @@ i.e. the $u_{jk}^\alpha$-eigenvalues are not gauge invariant. Indeed, for all si
 
 To obtain physical observables, we partition the set of labels $\left\{u_{jk}^\alpha\right\}$ into gauge-equivalent classes. One can show (see sec. \ref{sec:characterizationOfGaugeEquivalenceClasses}) that these can be fully characterized by the values of products
 \begin{equation}
-	W_\gamma = \prod_{\langle jk\rangle\in\gamma}\left(-i\, u^\alpha_{jk}\right)
+	W_\gamma = \prod_{\langle jk\rangle\in\gamma}\left(-i\, u^\alpha_{jk}\right) =
+	\prod_{\langle jk\rangle\in\gamma} \sigma_j^\alpha\sigma_k^\alpha
+	\label{eq:defWilsonLoop}
 \end{equation}
-around all the elementary non-contractible loops $\gamma$ of the lattice, which are typically the elementary plaquettes. Additionally, there may be non-local non-contractible loops arising from the topology of the underlying manifold, most prominently the two independent non-contractible loops on the torus for the case of periodic boundary conditions.
+around a set of independent loops $\gamma$ through the lattice, which are typically the elementary plaquettes. Additionally, there may be non-local non-contractible loops arising from the topology of the underlying manifold, most prominently the two independent non-contractible loops on the torus for the case of periodic boundary conditions.
+
+By fixing the all the values $u_{jk}^\alpha$ in Hamiltonian \ref{eq:kitaevModelMappedToMajoranas}, we have reduced the problem to free hopping of Majorana modes $d_j$. Comparing with the loop operators $W_\gamma$, we find that $W_\gamma$ corresponds to a translation operator for the Majorana mode around the loop $\gamma$, and therefore measures the flux
+\begin{equation}
+	W_\gamma = \exp\left(i \phi_\gamma\right)
+\end{equation}
+enclosed by $\gamma$. From $u_{jk}^\alpha=\pm 1$ and the definition in eq. \ref{eq:defWilsonLoop} it is clear that we can define flux in the range $\phi\in\left\{0,\pm\frac{\pi}{2},\pi\right\}$. 
+
+Introducing the anti-unitary time reversal operator
+\begin{equation}
+	\trs = \left(\prod_j i\sigma_j^y\right)K
+\end{equation}
+with complex conjugation in $z$-basis $K$ and using its property
+\begin{equation}
+	\sigma_j^\alpha\stackrel{\trs}{\rightarrow}-\sigma_j^\alpha\qquad\text{for all $j$ and $\alpha$,}
+\end{equation} 
+we see that $\trs$ commutes with all the loop operators and the Hamiltonian
+\begin{equation}
+	[H,\trs] = [W_\gamma, \trs] = 0.
+\end{equation}
+However, $\trs$ maps the flux to its complex conjugate $\phi_\gamma \stackrel{\trs}{\to}\phi_\gamma^\ast$, which shows that loop-eigenstates with $\pm \frac{\pi}{2}$-flux form degenerate Kramer's pairs with spontaneously broken time reversal symmetry. Loops have $\pm \frac{\pi}{2}$-flux if and only if they contain an odd number of sites. To see this, note that as a product of $u_{jk}^\alpha$ along a closed loop, the loop operator $W_\gamma$ if a product of pairwise commuting terms, as neighbouring bonds have different bond types $\alpha\neq\alpha'$ due to $\ast$. Therefore,
+\begin{equation}
+	W_\gamma^\dagger=(-1)^{|\gamma|} \,W_\gamma
+\end{equation}
+can be read off the factors of $i$ in eq. \ref{eq:defWilsonLoop}, where $|\gamma|$ means the number of sites in $\gamma$. This shows that $W_\gamma$ is purely real/imaginary on even/odd loops.
+
 \chapter{Additional Notes}
 
 \section{Representations of the Pauli Algebra}
@@ -225,27 +256,49 @@ Hence, if a set of matrices $\left\{\tilde\sigma^\alpha\right\}$ suffices these 
 
 \section{Characterization of Gauge-Equivalent Sectors}
 \label{sec:characterizationOfGaugeEquivalenceClasses}
-Here, we will adapt the more general derivation in \cite{geometricCriterion} to show why the flux through elementary non-contractible loops classifies the gauge-equivalence classes of bond-configurations $\left\{u_{jk}^\alpha\right\}$. We start by viewing the lattice as a graph of vertices (sites) connected by edges (bonds), which is assumed to be connected, as non-connected parts are physically independent and could be solved individually. The labels $\left\{u_{jk}^\alpha\right\}$ then correspond to assigning numbers $\pm 1$ to each edge, and the gauge transformation $D_j$ corresponds to flipping all the $u$-numbers incident to site $j$. Assumption $(\ast)$ from section \ref{sec:applicationOfMappingToModel} (i.e. that each site has at at most one bond of each bond type $\alpha=x,y,z$) then implies that no vertex has a degree larger than $3$.
+In this section, we will translate the lattice geometry into a graph-theoretical language and prove that the equivalence classes of gauge-equivalent states are always uniquely characterized by the flux through the independent loops. The proof is inspired by a more general result on exactly solvable spin models \cite{geometricCriterion} and by well-known results from graph theory \cite{cyclomaticberge}.
 
-Let us call the number of vertices $n$ and the number of bonds $m$. First, we show that there exists a set of $n-1$ edges such that every gauge-class of configurations has a representative with 
+The lattice defines a graph $\mathcal{G}$ with a vertex for each spin. We add an edge between the vertices $j$ and $k$ for every interaction term $\langle jk\rangle$ in the Hamiltonian. Let $n$ be the number of vertices and $m$ be the number of edges. We may further assume that $\mathcal{G}$ is connected, as multiple connected components can be treated independently. The configurations of bond-variables $u_{jk}^\alpha$ correspond to $m$-tuples of binary variables 
 \begin{equation}
-		u_{j_1 k_1}^\alpha,\dots,u_{j_{n-1} k_{n-1}}^\alpha=1,
+	\bm u = \left(u_1,\dots,u_m\right)\in \left\{\pm 1\right\}^m
+\end{equation}
+associated with the edges. A gauge transformations $D_l\in\left\{D_1,\dots,D_n\right\}$ maps between such tuples by flipping the variables on the edges incident to site $l$. We call two configurations equivalent if they are related to each other by a gauge transformation. This induces an equivalence relation and a partition of the configuration space into disjoint equivalence classes $[\bm u]$.
+
+\begin{proposition}
+	Let $\mathcal{G}$ be a connected graph. Then, there are $m-n+1$ non-empty equivalence classes $[\bm u]$ and as many independent cycles $\gamma_l$ in $\mathcal{G}$, such that each $[\bm u]$ can be uniquely labeled by the gauge-invariant tuple $\Big(W_1([\bm u]),\dots,W_{m-n+1}([\bm u])\Big)$ with
+	\begin{equation}
+		W_{l}([\bm u]) \coloneq \prod_{\text{edge }j \in \gamma_l} u_j\qquad \text{for any representative $\bm u$ of $[\bm u]$}.
+		\label{eq:definitionWl}
+	\end{equation}
+\end{proposition}
+
+\begin{proof}
+To prove the 1-to-1 correspondence between $W_l$-labels and equivalence classes $[\bm u]$, the proof will be structured into two steps: First, eliminate ${n-1}$ degrees of freedom using the gauge freedom. Then, we show that the remaining $m-n+1$ degrees of freedom allow to realize each of the $2^{m-n+1}$ configurations for the $W_l([\bm u])$. 
+
+Step 1: Show that every class $[\bm u]$ has a representative of the form
+\begin{equation}
+		\bm u = \big(u_1,\dots,u_{m-n+1},\underbrace{1,\dots,1}_\text{n-1 times}\big) \in \left\{\pm 1\right\}^m.
 		\label{eq:bondsFixedToOne}
 \end{equation}
-surviving the sanity-check that every connected graph has at least $n-1$ edges. To prove this, consider a spanning tree of the graph, i.e. a subgraph containing no cycles, which connects all $n$ vertices. Such a tree always exists for a connected graph and contains $n-1$ edges, which will correspond to the above $u_{j_l k_l}^\alpha$, $l=1,\dots,n-1$. We provide an algorithm that transforms any configuration $\left\{u_{jk}^\alpha\right\}$ into one sufficing equation \ref{eq:bondsFixedToOne}:
+The following algorithm transforms any configuration $\bm u$ into one sufficing equation \ref{eq:bondsFixedToOne}. Consider a spanning tree $\mathcal{T}$ of the graph, i.e. a subgraph $\mathcal{T}\subset \mathcal{G}$ connecting all vertices of $\mathcal{G}$ without containing a cycle. Such a tree always exists for a connected graph and contains $n-1$ edges. We pick our edge-labeling such that these correspond to $u_{m-n+2},\dots,u_{m}$. Now let $\bm u$ be an arbitrary configuration and apply the following steps:
 \begin{enumerate}
 	\item[1:] Pick some starting vertex $v_{j=1}$ in the spanning tree, mark it as visited.
-	\item[2:] Pick some next unvisited vertex $v_{j+1}$ adjacent to a visited one (e.g. following a depth-first-search).
-	\item[3:] Potentially apply a gauge transformation $D_{j+1}$ to assert that $u_{j,j+1}^\alpha=1$.
-	\item[4:] Mark $v_{i+1}$ as visited and repeat from 2 with $i\to i+1$ if not all vertices visited.
+	\item[2:] Pick some next unvisited vertex $v_{j+1}$ adjacent to a visited one (e.g. following a depth-first-search). Label the variable on the traversed edge as $u_{m-n+j}$.
+	\item[3:] Potentially apply a gauge transformation $D_{j+1}$ at the new vertex $j+1$ to assert $u_{m-n+j}=1$ and mark $v_{j+1}$ as visited.
+	\item[5:] While $j<n$: Repeat from step 2 with $j\to j+1$.
 \end{enumerate}
-As the spanning tree contains no cycles, this algorithm traverses every edge of the tree, installs the correct value $u_{jk}^\alpha=1$ and is guaranteed not to affect the same edge again, as both vertices of this edge are marked as visited. This shows that out of the $m$ bond variables, at least $n-1$ can be fixed by the gauge freedom. Therefore, at most $2^{m-n+1}$ inequivalent classes can exist.
+This algorithm traverses every edge of the tree $\mathcal{T}$, installs the correct value $u_{m-n+j}=1$ and is guaranteed not to affect the same edge again, as both vertices of this edge are marked as visited. With that, $n-1$ degrees of freedom are eliminated.
 
-According to a general result from graph theory, the number $m-n+1$ coincides with the maximum number of independent cycles through the graph. Therefore, we can define $m-n+1$ independent quantities
-\begin{equation}
-	W_\gamma \coloneq \prod_{\langle jk\rangle\in\gamma} \left(-i\,u^\alpha_{jk}\right),
-\end{equation}
-where $\gamma$ are independent cycles through the lattice. These quantities are gauge invariant, as each vertex $k$ in $\gamma$ is included in exactly two edges $\langle jk\rangle,\langle kl\rangle\in\gamma$, which cancels the minus-sign generated by a gauge transformation on $k$. Therefore, if two states differ by the eigenvalue of $W_\gamma$ for some loop $\gamma$, they cannot be gauge-equivalent.
+Next, we show that the remaining $m-n+1$ degrees of freedom of configurations satisfying eq. \ref{eq:bondsFixedToOne} always allow to realize each possible combination of the $m-n+1$ $W_l$-values defined in eq. \ref{eq:definitionWl}. We will show that this is true for some specifically constructed set of independent loops $\gamma_l$.
+
+Let $\left(W_1,\dots,W_{m-n+1}\right)\in\left\{\pm 1\right\}^{m-n+1}$ be fixed. We describe a way to pick the values $u_1,\dots,u_{m-n+1}$ to obtain a configuration $\bm u$ with these $W_l$-values. For conciseness, we construct the cycles $\gamma_l$ during this procedure, but note that these are independent of the desired $W_l$-values. Add the remaining edges $u_1,\dots,u_{m-n+1}$ to the spanning tree $\mathcal{T}$ inductively to recover the original graph $\mathcal{G}$ and keep track of all added cycles. Start with an empty set of cycles $\Gamma = \left\{\right\}$ and $l=0$.
+
+Induction step $l-1\to l$: Pick an edge $u_l$ of $\mathcal{G}$ that is currently missing in $\mathcal{T}$. So far, only the edges $u_1,\dots,u_{l-1}$ have been added to  $\mathcal{T}$, so none of the cycles in $\Gamma$ can contain $u_l$. Now, add $u_l$ to $\mathcal{T}$. With that, new cycles containing $u_l$ become possible. Let $\gamma_l$ be one of them, and add it to $\Gamma$. As $\gamma_l$ is the only cycle in $\Gamma$ containing the edge $u_l$, the value $u_l=\pm 1$ can be picked such that $W_{\gamma_l} = 1$ without affecting the already fixed $W_1,\dots,W_{l-1}$.
+
+After the $m-n+1$ induction steps needed to recover $\mathcal{G}$ from $\mathcal{T}$, we have constructed $m-n+1$ independent cycles in $\Gamma$ and a state $\bm u$ obeying eq. \ref{eq:bondsFixedToOne} and possessing the desired $W_l$-values around these cycles. To sum up, out of the $m$ degrees of freedom of a configuration $\bm u$, $n-1$ can be eliminated using the gauge freedom. The remaining $2^{m-n+1}$ configurations realize the $2^{m-n+1}$ different combinations of $W_l$-values, and are therefore in 1-to-1 correspondence with these. The $W_l$ are gauge-invariant, since in closed loops, each vertex must be included in an even number of edges, therefore canceling the sign-flips of any gauge transformation. This concludes the prove that there are exactly $2^{m-n+1}$ gauge-inequivalent classes of configurations.
+
+
+\end{proof}
 
 \printbibliography
 \end{document}

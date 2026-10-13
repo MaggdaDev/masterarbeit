@@ -1,0 +1,16 @@
+Felix+Harald (12.10.26)
+Mir wurden Latex und code base gezeigt, Hauptaufgaben für die nächste Zeit:
+- Mapping in Latex aufschreiben
+- Rechnung mit allen Vorzeichen nachvollziehen
+- Floquet Rechnung auf zwei arten nachrechnen: Wie im Latex + durch per-Hand exp(Majoranas)~cos + sin
+- critical Point sqrt(3) nachrechnen
+- Code nachvollziehen
+
+Generell wichtig: Conventions in Latex und code (zB: Immer flux gegen Uhrzeigersinn)
+
+Punkte für danach:
+- driving-periode so einstellen, dass alle bänder gleichzeitig flach werden (pi/2, pi/4, … ?)
+- projective Inversion? Model-symmetries nachvollziehen!
+
+Generell todo:
+Claude von Frank holen
